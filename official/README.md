@@ -10,21 +10,21 @@ return to the ECEB to submit the project and finish the game.
 
 ## Commands
 
-look: Display the current room's description and riddle
-north: selects the north option
-south: selects the south option
-west: selects the west option
-east: selects the east option
-giveup: exits the game
-backpack: views the inventory contents
-grab: collect the object in the current room
-status: display the current location with the backpack contents
-home: return to the home location
-call: talk to your friend Khory
-help: get hints on your current progress
-commands: display the possible commands
-make: obtain the final project once all pieces have been collected
-submit: finish the game once the final project has been made
+look: Display the current room's description and riddle  
+north: selects the north option  
+south: selects the south option  
+west: selects the west option  
+east: selects the east option  
+giveup: exits the game  
+backpack: views the inventory contents  
+grab: collect the object in the current room  
+status: display the current location with the backpack contents  
+home: return to the home location  
+call: talk to your friend Khory  
+help: get hints on your current progress  
+commands: display the possible commands  
+make: obtain the final project once all pieces have been collected  
+submit: finish the game once the final project has been made  
 
 
 ## Usage
