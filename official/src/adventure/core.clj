@@ -19,12 +19,6 @@ north: A Horse, east: A Turtle, west: A Penny "
                 }
            :contents {:item :Laptop}}
 
-
-
-
-
-
-
 ;2. Main Quad
 
   :main-quad {:desc "Several people walk by you, talking about how wasted they got the previous night. Another riddle pops up:
@@ -195,13 +189,14 @@ north: 215614, south: 0, west: 999"
  })
 
 
-
+; player status
 (def adventurer
   {:location :home
    :inventory #{:FPGA :Notebook}
    :tick 0
    :seen #{}})
 
+; display player status
 (defn status [player]
   (let [location (player :location)]
     (print (str "You are " (-> the-map location :title) ". "))
@@ -211,9 +206,11 @@ north: 215614, south: 0, west: 999"
     (update-in player [:seen] #(conj % location))))
 
 
+; format the commands
 (defn to-keywords [commands]
   (mapv keyword (str/split commands #"[.,?! ]+")))
 
+; move to the dir location
 (defn go [dir player]
   (let [location (player :location)
         dest (->> the-map location :dir dir)]
@@ -222,11 +219,14 @@ north: 215614, south: 0, west: 999"
           player)
       (assoc-in   player [:location] dest))))
 
+
+; restart the inital position
 (defn gohome [player]
   (let [location (player :location)
         dest :home]
     (assoc-in player [:location] dest)))
 
+; search the player status
 (defn search [player]
   ; (let [item (get-in the-map [room :contents])]
     (println (:location :contents)player)
@@ -234,15 +234,13 @@ north: 215614, south: 0, west: 999"
   ; (update-in player [:seen] #(conj % :contents))))
 
 
-
+; quit the game
 (defn giveup[player]
 (do (println "You give up on your ECE 385 Final Project. Might as well drop out.")
 player)
 (java.lang.System/exit 0))
 
-
-
-
+; get the room's item
 (defn item [player]
   (let[location (player :location)
        cont (->> the-map location :contents :item)
@@ -254,6 +252,7 @@ player)
        (update-in player [:inventory] #(conj % cont))
       )))
 
+; get the final project item
 (defn make [player]
   (let[location (player :location)
        cont :final-project
@@ -265,43 +264,31 @@ player)
           (do (println "You are not ready.") player))))
 
 
+; display backpack items
 (defn backpack[player]
   (let [items (player :inventory)]
 
       (do (println (player :inventory)) player)
       ))
 
+; display commands
+(defn commands [player]
+  (do (println "The main commands: look, north, south, west, east, giveup, backpack, grab, status, home, call, help, commands, make, submit")
+    )player)
 
+; display info to tell player when done
 (defn help [player]
   (let [location (player :location)
         invent (player :inventory)]
     (if (and (contains? invent :Quartus-II-Software/Hardware-Package) (contains? invent :Lab-Manual) (contains? invent :Monitor)
              (contains? invent :Pencil) (contains? invent :Laptop) (contains? invent :LED-Strips) (contains? invent :VGA-Cable) (contains? invent :FPGA)
-             (contains? invent :Notebook)
-         (contains? invent :final-project)) ;meaning that all of the object have been gathered
-
+             (contains? invent :Notebook))
+        (do (println "You can now go to eceb. Make your project then submit it at the eceb")
+        player)
         (do (println "There are 10 things you need before you can go to ECEB.")
-        player))
-      )player)
+        player))))
 
-
-(defn commands [player]
-  (do (println "The main commands: look, north, south, west, east, giveup, backpack, grab, status, home, call, help, commands, make, submit")
-    )player)
-
-
-(defn check [player]
-  (let [location (player :location)
-        invent (player :inventory)]
-    (if (and (contains? invent :Quartus-II-Software/Hardware-Package) (contains? invent :Lab-Manual) (contains? invent :Monitor)
-             (contains? invent :Pencil) (contains? invent :Laptop) (contains? invent :LED-Strips) (contains? invent :VGA-Cable) (contains? invent :FPGA)
-             (contains? invent :Notebook) (identical? location :beckman))
-      (do (println "You can now go to eceb. go west to make your project")player)
-      (do (println "you cannot go to eceb yet, because you dont have all the object")player)
-      ;;   (contains? invent :final-project)) ;meaning that all of the object have been gathered
-
-))player)
-
+; attempt to finish the game
 (defn submit [player]
   (let [location (player :location)
         invent (player :inventory)]
